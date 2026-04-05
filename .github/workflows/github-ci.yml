@@ -1,4 +1,4 @@
-name: HardRock Playwright CI
+name: HardRock Playwright CI - Windows Chrome
 
 on:
   push:
@@ -9,42 +9,53 @@ on:
 
 jobs:
   playwright-test:
-    name: Run Playwright @hardrock Tests
-    runs-on: ubuntu-latest
+    name: Run Playwright @hardrock Tests (Chrome Headless)
+    runs-on:
+      - self-hosted
+      - windows
+      - x64
+      - hardrock_ci
 
     steps:
-    - name: Checkout repo
+    - name: Checkout repository
       uses: actions/checkout@v4
 
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: 18
+        cache: npm
 
     - name: Install dependencies
       run: npm ci
+      shell: powershell
 
-    - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
+    # ✅ Install ONLY Chromium (Chrome)
+    - name: Install Playwright Chromium only
+      run: npx playwright install chromium
+      shell: powershell
 
-    - name: Run Playwright tests (hardrock tag)
-      run: |
-        npx playwright test --grep @hardrock
+    # ✅ Run headless Chrome tests with tag filter
+    - name: Run Playwright tests (@hardrock, Chrome, headless)
+      run: npx playwright test --project=chromium --grep @hardrock
+      shell: powershell
       env:
         CI: true
 
+    # ✅ Upload HTML report
     - name: Upload Playwright HTML Report
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: playwright-hardrock-report
-        path: playwright-report/
+        name: playwright-hardrock-chrome-report
+        path: playwright-report
         retention-days: 7
 
+    # ✅ Upload raw test results
     - name: Upload Playwright Test Results
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: playwright-hardrock-results
-        path: test-results/
+        name: playwright-hardrock-chrome-results
+        path: test-results
         retention-days: 7

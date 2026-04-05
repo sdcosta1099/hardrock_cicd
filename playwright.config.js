@@ -1,70 +1,52 @@
 // @ts-check
 const { defineConfig, devices } = require('@playwright/test');
 
-// import { defineConfig } from '@playwright/test';
+module.exports = defineConfig({
+  testDir: './tests',
 
-export default defineConfig({
+  /* Expectations */
   expect: {
     timeout: 80 * 1000,
   },
-});
 
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// require('dotenv').config();
-
-/**`
- * @see https://playwright.dev/docs/test-configuration
- */
-module.exports = defineConfig({
-  
-
-  testDir: './tests',
-  /* Run tests in files in parallel */
+  /* Parallelization */
   fullyParallel: true,
-  /* Fail the build on CI if you accidentally left test.only in the source code. */
+
+  /* CI protections */
   forbidOnly: !!process.env.CI,
-  /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
-  /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
 
-  
-  reporter: [['html'],["allure-playwright",{outputFolder:'April_01_2026'}]] ,
-
-
-
-  /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
-  use: {
-      
-      launchOptions: {
-        
-        args: ["--start-maximized"],
-
-        slowMo: 1000
-      },
-    /* Base URL to use:  in actions like `await page.goto('/')`. */
-    // baseURL: 'http://127.0.0.1:3000',
-
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
-  },
-
-  /* Configure projects for major browsers */
-  projects: [
-     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
+  /* Reporters */
+  reporter: [
+    ['html'],
+    ['allure-playwright', { outputFolder: 'April_01_2026' }],
   ],
 
-  /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   url: 'http://127.0.0.1:3000',
-  //   reuseExistingServer: !process.env.CI,
-  // },
-});
+  /* Shared settings */
+  use: {
+    headless: true,              // ✅ FORCE headless
+    trace: 'on-first-retry',
+    screenshot: 'only-on-failure',
+    video: 'retain-on-failure',
 
+    launchOptions: {
+      args: [
+        '--disable-gpu',
+        '--disable-dev-shm-usage',
+        '--force-device-scale-factor=1',
+      ],
+    },
+  },
+
+  /* Chromium ONLY */
+  projects: [
+    {
+      name: 'chromium',
+      use: {
+        ...devices['Desktop Chrome'],
+        browserName: 'chromium',
+      },
+    },
+  ],
+});
