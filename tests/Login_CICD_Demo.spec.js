@@ -10,31 +10,7 @@ test('UH_9429_HALo | Configuration | Events & Offers | Quick Offers | Sort Quick
   await common.goToHALOWebApplication()
   await common.loginAndSubmit("TU_LAB_HALO_NIN_ADM","Password01@$")
 
-//   await pa.clickOnConfiguration()
-//   await pa.clickOnEventsAndOffers()
-//   await pa.clickOnManageQuickOffers()
-//  // await pa.validateQuickOfferSetupPageWithActiveQuickOffersDisplayed()
-//   await pa.validateQuickOfferSetupPageIsDisplayed()
-//   await pa.clickOnNameColumn()
-//   await pa.validateOffersSortedInAscendingOrder()
-//   await pa.clickOnNameColumn()
-//   await pa.validateOffersSortedInDescendingOrder()
-//   await pa.clickOnDescriptionColumn()
-//   await pa.validateOffersSortedInAscendingOrder()
-//   await pa.clickOnDescriptionColumn()
-//   await pa.validateOffersSortedInDescendingOrder()
-//   await pa.clickOnStartDateColumn()
-//   await pa.validateOffersSortedInAscendingOrder()
-//   await pa.clickOnStartDateColumn()
-//   await pa.validateOffersSortedInDescendingOrder()
-//   await pa.clickOnEndDateColumn()
-//   await pa.validateOffersSortedInAscendingOrder()
-//   await pa.clickOnEndDateColumn()
-//   await pa.validateOffersSortedInDescendingOrder()
-//   await pa.clickOnDisplayDateColumn()
-//   await pa.validateOffersSortedInAscendingOrder()
-//   await pa.clickOnDisplayDateColumn()
-//   await pa.validateOffersSortedInDescendingOrder()
+
   await common.logout();
 
 });
